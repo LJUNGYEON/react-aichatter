@@ -1,0 +1,23 @@
+.chatList-main{
+    height:40px;
+}
+.chat-title {
+    float: left;
+    margin-right : 0px;
+    width: 150px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    text-align: center;
+    margin-top: 0px;
+}
+.chat-title-input
+{
+    width: 130px;
+    float: left;
+    margin-left: 10px;
+}
+
+.chat-lsit-btn{
+ float: left;
+}
