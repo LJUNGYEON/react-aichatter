@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from 'react';
 
 import bg from '../img/aiChatter2.png';
-import {Button,Navbar,Container, Nav, Row, Col, Card, Form} from 'react-bootstrap';
+import {Button, Container,  Row, Col, Card, Form, InputGroup, Stack } from 'react-bootstrap';
 import '../css/main.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { library } from '@fortawesome/fontawesome-svg-core'
@@ -43,6 +43,7 @@ function Body(){
                                </Row>
                          </Container>
                      </Col>
+                     <Col xs={1}><div className="vr" /></Col> 
                     <Col>
                         <Row>
                             <Col>대화 스타일</Col>
@@ -113,12 +114,51 @@ function Body(){
               </Col>
             </Row>
             <Row>
+               
                 <Col>
-                 <p>나만의 어시스턴트 스마트한 경험</p>
+                 <Row>
+                  <Container style={{width: "70%"}}>
+                    <Row>
+                      <Col xs={1} className="mb-3 mt-5">
+                        <Button variant="outline-info"><FontAwesomeIcon icon="fa-solid fa-plus" /></Button>{' '}
+                      </Col>
+                      <Col className="mb-3 mt-5">
+                        <InputGroup>
+                          <InputGroup.Text id="inputGroup-sizing-default">
+                            <FontAwesomeIcon icon="fa-regular fa-message"/>
+                          </InputGroup.Text>
+                          <Form.Control
+                            placeholder="Ai Chatter에게 무엇이든 질문하세요!"
+                            aria-label="Default"
+                            aria-describedby="inputGroup-sizing-default"
+                          />
+                          <Button variant="outline-secondary" id="button-addon2">
+                            <FontAwesomeIcon icon="fa-solid fa-play" style={{color:"#13b6bc"}}/>
+                          </Button>
+                        </InputGroup>
+                      </Col>
+                      <Col xs={1} className="mb-3 mt-5">
+                        <Button variant="outline-info"><FontAwesomeIcon icon="fa-solid fa-table-cells-large" /></Button>{' '}
+                      </Col>
+
+                    </Row>
+                     
+                  </Container>
+                 </Row>
+                </Col>
+            </Row>
+            <Row className="mb-1 mt-1">
+                <Col>
+                <Stack direction="horizontal" gap={3} style={{color:"#C6C2C1"}}>
+                  <div className="p-2 ms-10"><FontAwesomeIcon icon="fa-solid fa-circle-info" /></div>
+                  <div className="p-2">Ai Chatter는 ai를 통해 제공됨에 따라 예상치 못한 결과나 부정확한 정보가 제공될 수 있습니다.</div>
+                  <div className="p-2 ms-auto">개인정보보호</div>
+                  <div className="vr" />
+                  <div className="p-2">사용약관</div>
+                </Stack>
                 </Col>
             </Row>
          </Container>
-
     )
 }
 

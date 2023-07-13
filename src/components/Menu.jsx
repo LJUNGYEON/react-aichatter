@@ -53,7 +53,7 @@ const Menu = ({ isActive }) => {
            {
               chatList.map(function(a,i){
                   return (
-                      <ChatList index={i} chatList={chatList} setChatList={setChatList} updateFlag={updateFlag} setUpdateFlag={setUpdateFlag}/>
+                      <ChatList key={i} index={i} chatList={chatList} setChatList={setChatList} updateFlag={updateFlag} setUpdateFlag={setUpdateFlag}/>
                   )
               })
           }
@@ -106,7 +106,7 @@ return(
              }} >
              <FontAwesomeIcon icon="fa-solid fa-pen" />
      	</Badge>
-     	 <Badge bg="primary" pill pill onClick={()=>{
+     	 <Badge bg="primary" pill onClick={()=>{
                   let updateFlagTmpDelete = [...props.updateFlag];
                   updateFlagTmpDelete.splice(props.index, 1);
                   props.setUpdateFlag(updateFlagTmpDelete);
