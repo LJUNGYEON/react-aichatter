@@ -50,9 +50,9 @@ function Body(){
                             <Col>
                                 <Container>
                                      <Row>
-                                        <Col> <Button variant="secondary">창의</Button>{' '}</Col>
-                                        <Col> <Button variant="secondary">균형</Button>{' '}</Col>
-                                        <Col> <Button variant="secondary">정보</Button>{' '}</Col>
+                                        <Col sm> <Button variant="secondary">창의</Button>{' '}</Col>
+                                        <Col sm> <Button variant="secondary">균형</Button>{' '}</Col>
+                                        <Col sm> <Button variant="secondary">정보</Button>{' '}</Col>
                                      </Row>
                                  </Container>
                             </Col>
@@ -150,7 +150,7 @@ function Body(){
             <Row className="mb-1 mt-1">
                 <Col>
                 <Stack direction="horizontal" gap={3} style={{color:"#C6C2C1"}}>
-                  <div className="p-2 ms-10"><FontAwesomeIcon icon="fa-solid fa-circle-info" /></div>
+                  <div className="p-2 ms-auto"><FontAwesomeIcon icon="fa-solid fa-circle-info" /></div>
                   <div className="p-2">Ai Chatter는 ai를 통해 제공됨에 따라 예상치 못한 결과나 부정확한 정보가 제공될 수 있습니다.</div>
                   <div className="p-2 ms-auto">개인정보보호</div>
                   <div className="vr" />

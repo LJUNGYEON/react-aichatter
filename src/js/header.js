@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, { useState} from 'react';
 import '../css/header.css';
 import axios from 'axios';
 import $ from 'jquery';

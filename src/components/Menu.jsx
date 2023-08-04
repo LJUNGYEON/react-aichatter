@@ -2,6 +2,9 @@ import styled from "styled-components";
 import { useState , useRef } from 'react';
 import data from '../test/data'
 import '../css/side.css';
+                                     
+import { useDispatch, useSelector } from 'react-redux';
+import {changeFlagAll} from '../store/store.js'
 
 import {Button,Container, Row, Col,  Form, Badge, ListGroup} from 'react-bootstrap';
 
@@ -20,6 +23,12 @@ const Menu = ({ isActive }) => {
     })
    ]);
 
+   let [chkList,setChkList]=useState([]);
+
+   let checkAll = useSelector((state)=> { return state.checkChatListFlagAll})
+   let dispatch = useDispatch();
+   console.log("chackAll    1:"+checkAll)
+
   return (
     <>
 
@@ -30,17 +39,36 @@ const Menu = ({ isActive }) => {
                     <Row>
                         <Col xs={2}>
                             <div className="fw-bold text-start">
-                               <input name="chkAll" className="custom-control-input " type="checkbox" value="chkAll" />
+                                <label>
+                                <input name="chkAll" className="custom-control-input"
+                                    onChange={(e)=>{
+                                        console.log("e.target.checked:"+e.target.checked)
+                                        dispatch(changeFlagAll())  
+                                    }}
+                                    type="checkbox" value="{chackAll}" checked={ checkAll ===true ? 'checked':''} />
 
-                               </div>
+                                </label>
+                            </div>
                         </Col>
                         <Col className="fw-bold text-start">
                          채팅 목록
                         </Col>
                         <Col>
-                             <Badge bg="primary" pill>
-                                 <FontAwesomeIcon icon="fa-solid fa-plus" />
-                            </Badge>
+                        { 
+                                checkAll === true ? 
+                                <>
+                                 <Badge bg="primary" pill>
+                                    <FontAwesomeIcon icon="fa-solid fa-trash-can" />
+                                </Badge>
+                                </>
+                                :
+                                <>
+                                    <Badge bg="primary" pill>
+                                        <FontAwesomeIcon icon="fa-solid fa-plus" />
+                                    </Badge>
+                                </>
+                            }
+                            
                         </Col>
                     </Row>
                 </Container>
@@ -53,7 +81,7 @@ const Menu = ({ isActive }) => {
            {
               chatList.map(function(a,i){
                   return (
-                      <ChatList key={i} index={i} chatList={chatList} setChatList={setChatList} updateFlag={updateFlag} setUpdateFlag={setUpdateFlag}/>
+                      <ChatList key={i} checkAll={checkAll} index={i} chatList={chatList} setChatList={setChatList} updateFlag={updateFlag} setUpdateFlag={setUpdateFlag}/>
                   )
               })
           }
@@ -64,7 +92,7 @@ const Menu = ({ isActive }) => {
 
 function ChatList(props){
     let [inputVal, setInputVal] = useState(props.chatList[props.index].title);
-
+    
     return(
        <ListGroup.Item as="li" className="d-flex justify-content-between align-items-start" >
            <div className="ms-2 me-auto w-100 " >
@@ -72,21 +100,62 @@ function ChatList(props){
                   props.updateFlag[props.index] == true?
        			<>
 
-                <div className="fw-bold text-start"> <FontAwesomeIcon icon="fa-regular fa-message"/>7일전</div>
-                  <div className="fw-bold text-center">
-                       <input className="chat-title-input text-center" type="text" id={"cTitle"+props.chatList[props.index].id} defaultValue={inputVal}
-                         onChange={(e)=>{
-                            setInputVal(e.target.value);
-                        }} />
-                        <UpdateAfterBtn inputVal={inputVal} index={props.index} updateFlag={props.updateFlag} setUpdateFlag={props.setUpdateFlag}  chatList={props.chatList} setChatList={props.setChatList}/>
-       		        </div>
+                <div className="fw-bold text-start">7일전</div>
+                    <div className="fw-bold text-center">
+                    { 
+                        props.checkAll === true ? 
+                        <>
+                        <label>
+                            <input name="chkList" className="custom-control-input"
+                                onChange={(e)=>{
+                                    console.log("e.target.checked:"+e.target.checked)
+                                 
+                                }}
+                                type="checkbox"  checked={  props.checkAll ===true ? 'checked':''} />
+
+                        </label>
+                        </>
+                        :
+                        <>
+                            <span className="float-start "><FontAwesomeIcon icon="fa-regular fa-message"/></span>
+                        </>
+                    }
+                    
+
+
+                        <input className="chat-title-input text-center" type="text" id={"cTitle"+props.chatList[props.index].id} defaultValue={inputVal}
+                            onChange={(e)=>{
+                                setInputVal(e.target.value);
+                            }} />
+                        <span className="float-end" >
+                            <UpdateAfterBtn  inputVal={inputVal} index={props.index} updateFlag={props.updateFlag} setUpdateFlag={props.setUpdateFlag}  chatList={props.chatList} setChatList={props.setChatList}/>
+                        </span>
+    		        </div>
        			</>
                    :
        			<>
-       			 <div className="fw-bold text-start"> <FontAwesomeIcon icon="fa-regular fa-message"/>7일전</div>
+       			 <div className="fw-bold text-start"> 7일전</div>
                     <div className="fw-bold text-center">
+                    { 
+                        props.checkAll === true ? 
+                        <>
+                        <label className="float-start ">
+                            <input name="chkList" className="custom-control-input "
+                                onChange={(e)=>{
+                                    console.log("e.target.checked:"+e.target.checked)
+                                 
+                                }}
+                                type="checkbox" value="{chackAll}" checked={  props.checkAll ===true ? 'checked':''} />
+
+                        </label>
+                        </>
+                        :
+                        <>
+                            <span className="float-start "><FontAwesomeIcon icon="fa-regular fa-message"/></span>
+                        </>
+                    }
                         <span className="text-center"> {props.chatList[props.index].title}</span>
-                        <UpdateBeforeBtn index={props.index} updateFlag={props.updateFlag} setUpdateFlag={props.setUpdateFlag} chatList={props.chatList} setChatList={props.setChatList}/>
+                        <span className="float-end"><UpdateBeforeBtn  index={props.index} updateFlag={props.updateFlag} setUpdateFlag={props.setUpdateFlag} chatList={props.chatList} setChatList={props.setChatList}/></span>
                     </div>
        			</>
                  }

@@ -8,7 +8,7 @@ import './App.css';
 import styled, { css } from "styled-components";
 import Body from './js/body';
 import Menu from './components/Menu';
-import {Button,Navbar,Container, Nav, Row, Col, Card, Form} from 'react-bootstrap';
+import {Container, Row, Col, Card, Form} from 'react-bootstrap';
 const Container2 = styled.div`
   width: 100%;
   height: 100%;
