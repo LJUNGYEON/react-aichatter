@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import { useState , useRef } from 'react';
+import { useEffect, useState , useRef } from 'react';
 import data from '../test/data'
 import '../css/side.css';
                                      
@@ -23,12 +23,63 @@ const Menu = ({ isActive }) => {
     })
    ]);
 
-   let [chkList,setChkList]=useState([]);
+  
 
    let checkAll = useSelector((state)=> { return state.checkChatListFlagAll})
    let dispatch = useDispatch();
-   console.log("chackAll    1:"+checkAll)
 
+
+   let [chkList,setChkList]=useState(new Set());
+   const [bChecked, setChecked] = useState(false);
+
+   const checkedItemHandler = (id, isChecked) => {
+    if (isChecked) {
+        chkList.add(Number(id));
+        setChkList(chkList);
+    } else if (!isChecked && chkList.has(Number(id))) {
+        chkList.delete(Number(id));
+        setChkList(chkList);
+    }
+   
+    if(chkList.size == chatList.length) {
+        setIsAllChecked(true);
+        setChecked(true);
+    }
+    else if(chkList.size != chatList.length && chkList.size == 0){
+        setIsAllChecked(false);
+        setChecked(false);
+    }
+    else if( chkList.size != chatList.length && chkList.size > 0){
+        setIsAllChecked(false);
+        setChecked(true);
+    }
+  };
+   
+    const checkHandler = ({ target }) => {
+   
+    checkedItemHandler(target.id, target.checked);
+    };
+
+    const [isAllChecked, setIsAllChecked] = useState(false);
+
+const allCheckedHandler = (isChecked) => {
+    
+  if (!isAllChecked) {
+    setChkList(new Set(chatList.map(({ id }) => id)));
+    setIsAllChecked(true);
+    setChecked(true);
+  } else {
+   // chkList.clear();
+    chkList.clear();
+    setChkList(new Set());
+    setIsAllChecked(false);
+    setChecked(false);
+  }
+};
+
+const allCheckHandler = () => setChecked(isAllChecked);
+
+useEffect(() => allCheckHandler(), [isAllChecked]);
   return (
     <>
 
@@ -41,11 +92,8 @@ const Menu = ({ isActive }) => {
                             <div className="fw-bold text-start">
                                 <label>
                                 <input name="chkAll" className="custom-control-input"
-                                    onChange={(e)=>{
-                                        console.log("e.target.checked:"+e.target.checked)
-                                        dispatch(changeFlagAll())  
-                                    }}
-                                    type="checkbox" value="{chackAll}" checked={ checkAll ===true ? 'checked':''} />
+                                    onChange={(e)=>{ allCheckedHandler(isAllChecked) } }
+                                    type="checkbox" value="{chackAll}" checked={ isAllChecked ===true ? 'checked':''} />
 
                                 </label>
                             </div>
@@ -55,7 +103,7 @@ const Menu = ({ isActive }) => {
                         </Col>
                         <Col>
                         { 
-                                checkAll === true ? 
+                                isAllChecked === true ? 
                                 <>
                                  <Badge bg="primary" pill>
                                     <FontAwesomeIcon icon="fa-solid fa-trash-can" />
@@ -81,7 +129,7 @@ const Menu = ({ isActive }) => {
            {
               chatList.map(function(a,i){
                   return (
-                      <ChatList key={i} checkAll={checkAll} index={i} chatList={chatList} setChatList={setChatList} updateFlag={updateFlag} setUpdateFlag={setUpdateFlag}/>
+                      <ChatList key={i} checkHandler={checkHandler} chkList={chkList} isAllChecked={isAllChecked} bChecked={bChecked} index={i} chatList={chatList} setChatList={setChatList} updateFlag={updateFlag} setUpdateFlag={setUpdateFlag}/>
                   )
               })
           }
@@ -92,27 +140,23 @@ const Menu = ({ isActive }) => {
 
 function ChatList(props){
     let [inputVal, setInputVal] = useState(props.chatList[props.index].title);
-    
     return(
        <ListGroup.Item as="li" className="d-flex justify-content-between align-items-start" >
            <div className="ms-2 me-auto w-100 " >
                  {
-                  props.updateFlag[props.index] == true?
+                    props.updateFlag[props.index] == true?
        			<>
 
                 <div className="fw-bold text-start">7일전</div>
                     <div className="fw-bold text-center">
                     { 
-                        props.checkAll === true ? 
+                       props.chkList.size > 0 ? 
                         <>
-                        <label>
-                            <input name="chkList" className="custom-control-input"
-                                onChange={(e)=>{
-                                    console.log("e.target.checked:"+e.target.checked)
-                                 
-                                }}
-                                type="checkbox"  checked={  props.checkAll ===true ? 'checked':''} />
-
+                        <label style={{float: "left"}}>
+                            <input name="chkList" className="custom-control-input" 
+                               onChange={(e) => props.checkHandler(e)}
+                               checked={props.chkList.has(Number(props.index)) === true ? 'checked':''} 
+                                type="checkbox" id={props.index}  />
                         </label>
                         </>
                         :
@@ -120,9 +164,6 @@ function ChatList(props){
                             <span className="float-start "><FontAwesomeIcon icon="fa-regular fa-message"/></span>
                         </>
                     }
-                    
-
-
                         <input className="chat-title-input text-center" type="text" id={"cTitle"+props.chatList[props.index].id} defaultValue={inputVal}
                             onChange={(e)=>{
                                 setInputVal(e.target.value);
@@ -137,15 +178,13 @@ function ChatList(props){
        			 <div className="fw-bold text-start"> 7일전</div>
                     <div className="fw-bold text-center">
                     { 
-                        props.checkAll === true ? 
+                         props.chkList.size > 0 ? 
                         <>
-                        <label className="float-start ">
-                            <input name="chkList" className="custom-control-input "
-                                onChange={(e)=>{
-                                    console.log("e.target.checked:"+e.target.checked)
-                                 
-                                }}
-                                type="checkbox" value="{chackAll}" checked={  props.checkAll ===true ? 'checked':''} />
+                        <label className="float-start " style={{float: "left"}}>
+                            <input name="chkList" className="custom-control-input " id={props.index}
+                                onChange={(e) => props.checkHandler(e)}
+                                checked={props.chkList.has(Number(props.index)) ===true ? 'checked':''}
+                                type="checkbox"  />
 
                         </label>
                         </>
@@ -200,7 +239,7 @@ return(
            props.setUpdateFlag(updateFlagTmp);
 
            let chatListTmp = [...props.chatList];
-           console.log(props.inputVal);
+        
            chatListTmp[props.index].title = props.inputVal;
            props.setChatList(chatListTmp);
         }}>
