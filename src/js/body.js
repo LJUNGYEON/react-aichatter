@@ -1,5 +1,7 @@
 import React, {useEffect, useState} from 'react';
-
+import { Routes, Route, Link , useNavigate} from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
+import {chgContent} from '../store/content.js'
 import bg from '../img/aiChatter2.png';
 import {Button, Container,  Row, Col, Card, Form, InputGroup, Stack } from 'react-bootstrap';
 import '../css/main.css';
@@ -14,6 +16,19 @@ const divStyle = {
   };
 
 function Body(){
+
+  let r_a = useSelector((state)=>{
+    return state; 
+  })
+console.log(r_a);
+  let dispatch = useDispatch();
+
+  const movePage = useNavigate();
+
+  function goMain(){
+     movePage('/js/main_chat');
+   }
+
     return(
         <Container fluid   >
            <Row>
@@ -131,8 +146,11 @@ function Body(){
                             placeholder="Ai Chatter에게 무엇이든 질문하세요!"
                             aria-label="Default"
                             aria-describedby="inputGroup-sizing-default"
+                            onChange={(e)=> {
+                              dispatch(chgContent(e.target.value))
+                            }}
                           />
-                          <Button variant="outline-secondary" id="button-addon2">
+                          <Button variant="outline-secondary" id="button-addon2" onClick={goMain} >
                             <FontAwesomeIcon icon="fa-solid fa-play" style={{color:"#13b6bc"}}/>
                           </Button>
                         </InputGroup>

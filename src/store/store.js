@@ -1,4 +1,5 @@
-import { configureStore , createSlice } from "@reduxjs/toolkit";
+import { configureStore , createSlice} from "@reduxjs/toolkit";
+import content from "./content.js"
 
 let user = createSlice({
     name:'user',
@@ -24,8 +25,6 @@ let checkChatListFlagAll = createSlice({
 })
 
 export let {changeFlagAll} = checkChatListFlagAll.actions
-
-
 
 let chkList = createSlice({
     name:'chkList',
@@ -57,7 +56,8 @@ export default configureStore({
 
     reducer:{
         user: user.reducer,
-        checkChatListFlagAll : checkChatListFlagAll.reducer
+        checkChatListFlagAll : checkChatListFlagAll.reducer,
+        content: content.reducer
 
     }
 })

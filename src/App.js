@@ -2,11 +2,12 @@ import {useEffect, useState} from "react";
 
 import React from "react";
 import { useMediaQuery } from "react-responsive";
-
+import { Route, Routes } from 'react-router-dom';
 import Header from './js/header';
 import './App.css';
 import styled, { css } from "styled-components";
 import Body from './js/body';
+import MainChart from './js/main_chat';
 import Menu from './components/Menu';
 import {Container, Row, Col, Card, Form} from 'react-bootstrap';
 const Container2 = styled.div`
@@ -107,7 +108,12 @@ function App() {
               </Outside>
             </Col>
             <Col>
-             <Container2><Body/></Container2>
+            <Container2>
+              <Routes>
+                <Route path='/' element={<Body />} />
+                <Route exact path='/js/main_chat' element={<MainChart />} />
+              </Routes>
+            </Container2>
            </Col>
            </Row>
         </Container>
