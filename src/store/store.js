@@ -1,5 +1,6 @@
 import { configureStore , createSlice} from "@reduxjs/toolkit";
 import content from "./content.js"
+import answer from "./answer.js"
 
 let user = createSlice({
     name:'user',
@@ -57,7 +58,8 @@ export default configureStore({
     reducer:{
         user: user.reducer,
         checkChatListFlagAll : checkChatListFlagAll.reducer,
-        content: content.reducer
+        content: content.reducer,
+        answer: answer.reducer
 
     }
 })
